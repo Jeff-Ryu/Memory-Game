@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<!-- CSS / JS -->
+		<link rel="stylesheet" type="text/css" href="css/styles.css">
+		<script src="js/script.js"></script>
+		<!-- Font -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+		<title>Memory Tester</title>
+	</head>
+	<body class="chakra-petch-semibold">
+		<main>
+			<section id="start-page" class="page" onclick="start()">
+				<div class="row row1">
+                    <div class="circle circle1">&#9679;</div>
+                </div>
+				<div class="text-container">
+                	<p id="title" class="text">Click to Start</p>
+					<p id="highest" class="text"></p>
+				</div>
+                <div class="row row2">
+                    <div class="circle circle5">&#9679;</div>
+                </div>
+			</section>
+			<section id="grid-page" class="hidden">
+				<div class="top-row">
+					<p id="level" class="level-text">LEVEL </p>
+				</div>
+				<div id="grid-container">
+					<div class="row" id="row1">
+						<div class="tile" data-index="0"><p class="num" data-index="0"></p></div>
+						<div class="tile" data-index="1"><p class="num" data-index="1"></p></div>
+						<div class="tile" data-index="2"><p class="num" data-index="2"></p></div>
+						<div class="tile" data-index="3"><p class="num" data-index="3"></p></div>
+						<div class="tile" data-index="4"><p class="num" data-index="4"></p></div>
+						<div class="tile" data-index="5"><p class="num" data-index="5"></p></div>
+						<div class="tile" data-index="6"><p class="num" data-index="6"></p></div>
+					</div>
+					<div class="row" id="row2">
+						<div class="tile" data-index="7"><p class="num" data-index="7"></p></div>
+						<div class="tile" data-index="8"><p class="num" data-index="8"></p></div>
+						<div class="tile" data-index="9"><p class="num" data-index="9"></p></div>
+						<div class="tile" data-index="10"><p class="num" data-index="10"></p></div>
+						<div class="tile" data-index="11"><p class="num" data-index="11"></p></div>
+						<div class="tile" data-index="12"><p class="num" data-index="12"></p></div>
+						<div class="tile" data-index="13"><p class="num" data-index="13"></p></div>
+					</div>
+					<div class="row" id="row3">
+						<div class="tile" data-index="14"><p class="num" data-index="14"></p></div>
+						<div class="tile" data-index="15"><p class="num" data-index="15"></p></div>
+						<div class="tile" data-index="16"><p class="num" data-index="16"></p></div>
+						<div class="tile" data-index="17"><p class="num" data-index="17"></p></div>
+						<div class="tile" data-index="18"><p class="num" data-index="18"></p></div>
+						<div class="tile" data-index="19"><p class="num" data-index="19"></p></div>
+						<div class="tile" data-index="20"><p class="num" data-index="20"></p></div>
+					</div>
+					<div class="row" id="row4">
+						<div class="tile" data-index="21"><p class="num" data-index="21"></p></div>
+						<div class="tile" data-index="22"><p class="num" data-index="22"></p></div>
+						<div class="tile" data-index="23"><p class="num" data-index="23"></p></div>
+						<div class="tile" data-index="24"><p class="num" data-index="24"></p></div>
+						<div class="tile" data-index="25"><p class="num" data-index="25"></p></div>
+						<div class="tile" data-index="26"><p class="num" data-index="26"></p></div>
+						<div class="tile" data-index="27"><p class="num" data-index="27"></p></div>
+					</div>
+					<div class="row" id="row5">
+						<div class="tile" data-index="28"><p class="num" data-index="28"></p></div>
+						<div class="tile" data-index="29"><p class="num" data-index="29"></p></div>
+						<div class="tile" data-index="30"><p class="num" data-index="30"></p></div>
+						<div class="tile" data-index="31"><p class="num" data-index="31"></p></div>
+						<div class="tile" data-index="32"><p class="num" data-index="32"></p></div>
+						<div class="tile" data-index="33"><p class="num" data-index="33"></p></div>
+						<div class="tile" data-index="34"><p class="num" data-index="34"></p></div>
+					
+					</div>
+				</div>
+			</section>
+			<section id="win-page" class="page hidden">
+				<p id="win-text1" class="text text1">You Win!</p>
+				<p id="win-text2" class="text text2" onclick="start()">Continue</p>
+				<p id="win-text3" class="text text3" onclick="loadPage('start')">Return to Menu</p>
+				<p id="win-text4" class="text text4">Time: </p>
+			</section>
+			<section id="loss-page" class="page hidden">
+				<p id="loss-text1" class="text text1">You Lost</p>
+				<p id="loss-text2" class="text text2" onclick="start()">Retry</p>
+				<p id="loss-text3" class="text text3" onclick="loadPage('start')">Return to Menu</p>
+				<p id="loss-text4" class="text text4">LEVEL </p>
+			</section>
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M125.7 160l50.3 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L48 224c-17.7 0-32-14.3-32-32L16 64c0-17.7 14.3-32 32-32s32 14.3 32 32l0 51.2L97.6 97.6c87.5-87.5 229.3-87.5 316.8 0s87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3s-163.8-62.5-226.3 0L125.7 160z"/></svg>
+		</main>
+	</body>
+</html>
