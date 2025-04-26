@@ -1,25 +1,26 @@
 let active = 0; // 0 or 1
 let number = 1; // 1 ~ 'count'
 let count = 3; // Count of numbers that will appear on grid
-let level = 1;
-let highestLevel = 0;
-
-let delay = 1000;
-let pageLoadDelay = 1000 * 0.7;
-
+let level = 1; // Count - 2, adjusted in start()
+let highestLevel = 0; // Highest Level reached by user
 let startTime = 0; // Time when tiles are covered
 let endTime = 0; // Time when last tile is clicked
 
-let coverGrid = null;
+const delay = 1000; // Gets multiplied to level to create delay before game begins
+const pageLoadDelay = 1000 * 0.7; // Delay before moving to win/loss screen
+
+// Timing Events initialized
+let coverGrid = null; 
 let loadWinPage = null;
 let loadLossPage = null;
 
+//On Load - Add event click listeners to all tiles on grid
 window.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".tile").forEach(tile => {
     tile.addEventListener("click", handleClick);
   });
 });
-
+// Start - Resets settings, loads game page, and start a delay
 function start() {
   clearData();
   loadPage("grid");
@@ -31,7 +32,7 @@ function start() {
     coverNum();
   }, startDelay);
 }
-
+// Clear Data - Empty all grids of numbers, clear animations and highlights from squares
 function clearData() {
   number = 1;
   active = 0;
@@ -44,7 +45,7 @@ function clearData() {
     clearSquare(tile);
   });
 }
-
+// Load Page - Hides the current page and reveals the next one. Also updates UI for next page
 function loadPage(page) {
   document.getElementById("start-page").classList.add("hidden");
   document.getElementById("grid-page").classList.add("hidden");
@@ -69,7 +70,7 @@ function loadPage(page) {
     row.classList.add("fadeUp");
   });
 }
-
+// Updates Highest - Changes highest level reached if last level was higher
 function updateHighest() {
   if (highestLevel < level) {
     highestLevel = level;
@@ -80,12 +81,12 @@ function updateHighest() {
   }
   count = 3;
 }
-
+// Populate Level
 function populateLevel() {
   const levelText = document.getElementById("level");
   levelText.textContent = "LEVEL " + level;
 }
-
+// Populate Numers - Geta a random number from the size of the grid, then populatea the square with that index
 function populateNum() {
   let i = 0;
   while (i < count) {
@@ -99,7 +100,7 @@ function populateNum() {
     }
   }
 }
-
+// Cover Numbers - Covers all non-empty grid tile on screen
 function coverNum() {
   document.querySelectorAll(".num").forEach(num => {
     const text = parseInt(num.textContent);
@@ -112,7 +113,7 @@ function coverNum() {
   active = 1;
   startTime = Date.now();
 }
-
+// Handle Click //
 function handleClick(event) {
   const target = event.currentTarget.closest(".tile");
   const index = parseInt(target.dataset.index);
@@ -137,17 +138,18 @@ function handleClick(event) {
     return;
   }
 }
-
+// Remove Square - Reveal the number and continue
 function removeSquare(target) {
   target.classList.add("tile-covered");
   void target.offsetWidth;
   target.classList.remove("tile-covered");
+  // Win condition check
   if (number === count) {
     victory(target);
   }
   number++;
 }
-
+// Victory - Generate and record time took to complete, and load win page
 function victory(target) {
   endTime = Date.now();
   let userTime = Math.round(((endTime - startTime) / 1000)*10)/10;
@@ -162,13 +164,12 @@ function victory(target) {
   active = 0;
   count++;
 }
-
+// Animations //
 function pop(target) {
   target.classList.remove("pop");
   void target.offsetWidth;
   target.classList.add("pop");
 }
-
 function wrongSquare(target) {
   target.classList.add("tile-covered");
   void target.offsetWidth;
@@ -178,7 +179,6 @@ function wrongSquare(target) {
   void target.offsetWidth;
   target.classList.add("tile-wrong");
 }
-
 function lastSquare(target) {
   target.classList.add("tile-covered");
   void target.offsetWidth;
@@ -188,7 +188,6 @@ function lastSquare(target) {
   void target.offsetWidth;
   target.classList.add("tile-last");
 }
-
 function clearSquare(target) {
   target.classList.remove("tile-covered", "tile-wrong", "tile-last");
 }
