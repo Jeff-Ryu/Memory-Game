@@ -90,7 +90,7 @@ function populateLevel() {
   const levelText = document.getElementById("level");
   levelText.textContent = "LEVEL " + level;
 }
-// Populate Numers - Geta a random number from the size of the grid, then populatea the square with that index
+// Populate Numers - Get random number and populate the square with that index
 function populateNum() {
   let i = 0;
   while (i < count) {
@@ -131,7 +131,7 @@ function handleClick(event) {
   if (clickedNum === number) {
     removeSquare(targetTile, targetNum, index);
   } else {
-    wrongSquare(targetTile);
+    wrongSquare(targetTile, targetNum, index);
     if (loadWinPage) clearTimeout(loadWinPage);
     loadLossPage = setTimeout (() => {
       loadPage("loss");
@@ -174,7 +174,9 @@ function pop(target) {
   void target.offsetWidth;
   target.classList.add("pop");
 }
-function wrongSquare(target) {
+function wrongSquare(target, num, i) {
+  num.textContent = gridArray[i];
+
   target.classList.add("tile-covered");
   void target.offsetWidth;
   target.classList.remove("tile-covered");
