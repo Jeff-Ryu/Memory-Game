@@ -14,6 +14,9 @@ let coverGrid = null;
 let loadWinPage = null;
 let loadLossPage = null;
 
+// Grid Array 0 ~ 34
+let gridArray = Array(35).fill(null);
+
 //On Load - Add event click listeners to all tiles on grid
 window.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".tile").forEach(tile => {
@@ -36,6 +39,7 @@ function start() {
 function clearData() {
   number = 1;
   active = 0;
+  gridArray = Array(35).fill(null);
   if (loadWinPage) clearTimeout(loadWinPage);
   if (loadLossPage) clearTimeout(loadLossPage);
   document.querySelectorAll(".num").forEach(num => {
@@ -91,11 +95,10 @@ function populateNum() {
   let i = 0;
   while (i < count) {
     let randTile = Math.floor(Math.random() * 35);
-    let targetTile = document.querySelector(`.num[data-index="${randTile}"]`);
-    let currentText = parseInt(targetTile.textContent);
-
-    if (isNaN(currentText)) {
-      targetTile.textContent = i + 1;
+    if (gridArray[randTile] === null) {
+      gridArray[randTile] = i + 1;
+      const numElement = document.querySelector(`.num[data-index="${randTile}"]`);
+      numElement.textContent = i + 1;
       i++;
     }
   }
@@ -108,6 +111,7 @@ function coverNum() {
       const index = parseInt(num.dataset.index);
       const tile = document.querySelector(`.tile[data-index="${index}"]`);
       tile.classList.add("tile-covered");
+      num.textContent = "";
     }
   })
   active = 1;
@@ -115,20 +119,19 @@ function coverNum() {
 }
 // Handle Click //
 function handleClick(event) {
-  const target = event.currentTarget.closest(".tile");
-  const index = parseInt(target.dataset.index);
-  const clickedNum = document.querySelector(`.num[data-index="${index}"]`);
-  const text = parseInt(clickedNum.textContent);
+  const targetTile = event.currentTarget.closest(".tile");
+  const index = parseInt(targetTile.dataset.index);
+  const targetNum = document.querySelector(`.num[data-index="${index}"]`);
+  const clickedNum = gridArray[index];
 
   if (active === 0) return;
-  if (isNaN(text)) return;
-  if (text < number) return;
-  pop(target);
+  if (clickedNum < number) return;
+  pop(targetTile);
 
-  if (text === number) {
-    removeSquare(target);
+  if (clickedNum === number) {
+    removeSquare(targetTile, targetNum, index);
   } else {
-    wrongSquare(target);
+    wrongSquare(targetTile);
     if (loadWinPage) clearTimeout(loadWinPage);
     loadLossPage = setTimeout (() => {
       loadPage("loss");
@@ -139,10 +142,11 @@ function handleClick(event) {
   }
 }
 // Remove Square - Reveal the number and continue
-function removeSquare(target) {
+function removeSquare(target, num, i) {
   target.classList.add("tile-covered");
   void target.offsetWidth;
   target.classList.remove("tile-covered");
+  num.textContent = gridArray[i];
   // Win condition check
   if (number === count) {
     victory(target);
